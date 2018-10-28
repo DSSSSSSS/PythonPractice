@@ -24,6 +24,23 @@ def main():
     list(range(1, 11))
     [x * x for x in range(1, 11) if x % 2 == 0]
     [m + n for m in 'ABC' for n in 'XYZ']
+
+
+    #生成器(generator) 元素是在需要时计算出来的
+    g = (x * x for x in range(10))
+    for n in g:
+        print(n)
     
+
 if __name__ == '__main__':
     main()
+
+#一个函数定义中包含yield关键字，
+# 那么这个函数就不再是一个普通函数，而是一个generator
+def fib(max):
+    n, a, b = 0, 0, 1
+    while n < max:
+        yield b
+        a, b = b, a + b
+        n = n + 1
+    return 'done'
