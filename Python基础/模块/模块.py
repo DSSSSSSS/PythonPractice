@@ -20,3 +20,4 @@ if __name__=='__main__':
 
 #作用域
 #私有变量 _ __
+#pip install Pillow
