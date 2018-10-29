@@ -1,3 +1,3 @@
 # PythonPractice
 
-some practice about python 
+some practice about python
