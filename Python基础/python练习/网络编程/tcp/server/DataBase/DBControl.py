@@ -16,6 +16,8 @@ class User(Base):
 
 # 初始化数据库连接:
 engine = create_engine('sqlite:///test.db',echo=True)
+
+#创建
 Base.metadata.create_all(engine)
 # 创建DBSession类型:
 DBSession = sessionmaker(bind=engine)
