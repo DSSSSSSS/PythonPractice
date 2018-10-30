@@ -1,3 +1,4 @@
+
 from sqlalchemy import Column, String, create_engine
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.ext.declarative import declarative_base
@@ -13,6 +14,9 @@ class User(Base):
     id = Column(String(20), primary_key=True)
     name = Column(String(20))
     passwd =Column(String(20))
+    
+def registerToDB(id_,name_,passwd_):
+    new_user =User(id=id_,name=name_,passwd=passwd_)
 
 # 初始化数据库连接:
 engine = create_engine('sqlite:///test.db',echo=True)
@@ -25,7 +29,7 @@ DBSession = sessionmaker(bind=engine)
 # 创建session对象:
 session = DBSession()
 # 创建新User对象:
-new_user = User(id='6', name='Bob',passwd="123")
+new_user = User(id='5', name='Bob',passwd="123")
 # 添加到session:
 session.add(new_user)
 # 提交即保存到数据库:
