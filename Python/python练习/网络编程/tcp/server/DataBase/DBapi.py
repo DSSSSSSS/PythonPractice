@@ -5,10 +5,7 @@
     #  3.max id 查询最大ID，select max(id) from table
 # login
 import DBControl
-maxid =-1
 
-if maxid==-1:
-    maxid=DBControl.getMaxId()
 
 def register(name,passwd):
     if len(name)>20 or len(passwd)>20:
