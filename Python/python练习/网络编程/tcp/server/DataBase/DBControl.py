@@ -8,6 +8,8 @@ Base = declarative_base()
 
 maxid = -1
 
+class DBError(ValueError):
+    pass
 
 class DBQuery():
     def __init__(self):
@@ -35,17 +37,26 @@ class DBQuery():
         self.session.close()
 
     # 把给定user date 插入数据库
-    def registerUserToDB(self, name_, passwd_):
-        global maxid
-        if maxid == -1:
-            maxid = self.getMaxId()
-        if count(self.session.query(User).filter(User.name==name_).all())!=0:
-            raise 
+    def register(self, name_, passwd_):
+        #global maxid
+        #if maxid == -1:
+        maxid = self.getMaxId()
+        if (self.session.query(User).filter(User.name==name_).count())!=0:
+            raise DBError("name is invalid") #重名异常
         new_user = User(maxid, name=name_, passwd=passwd_)
 
         self.insert(new_user)
-        maxid += 1
-
+        #maxid += 1
+    
+    def login(self,name,passwd):
+        #re =self.session.query(User).filter(User.name==name).filter(User.passwd==passwd).all()
+        #for i in re:
+            #print(i)
+        if self.session.query(User).filter(User.name==name).filter(User.passwd==passwd).count()!=0:
+            return True
+        else :
+            return False
+    
     def insert(self, new_user):
         # 创建session对象:
         #session = DBSession()
@@ -83,9 +94,12 @@ DBSession = sessionmaker(bind=engine)
 def main():
     new_user = User(id='4', name='Bob', passwd="123")
     q=DBQuery()
-    #q.insert(new_user)
+    #q.register(name_="Bob", passwd_="123")
     id_=q.getMaxId()
-    print(id_)
+    re =q.login(name ="Bob",passwd="123")
+    print(re)
+    #print(id_)
+
 
 
 if __name__ == '__main__':
