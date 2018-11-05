@@ -5,7 +5,8 @@
             "includePath": [
                 "${workspaceFolder}/**",
                 "${vcpkgRoot}/x86-windows/include",
-                 "${workspaceFolder}/program\\cpp\\cppBase\\关键字"
+                 "${workspaceFolder}/program\\cpp\\cppBase\\关键字",
+                 "${workspaceFolder}/program\\cpp\\cppBase"
             ],
             "defines": [
                 "_DEBUG",
