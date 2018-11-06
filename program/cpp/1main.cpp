@@ -1,9 +1,12 @@
+//GBK
 #include<iostream>
 #include<vector>
 //#include"auto.cpp"
 #include"cppBase/keyWord/auto.cpp"
 #include<memory>
+#include<string>
 
+#include"cppPractice\Ä£Ê½\singleMode.cpp"
 using namespace std;
 
 void process(shared_ptr<int> ptr)
@@ -23,6 +26,8 @@ int main(int argc, char const *argv[])
     process(shared_ptr<int>(p6));
     int v6 = *p6;
     cout<<"v6: "<<v6<<endl;
+    string str = "ÄãºÃ";
+    cout<<str<<endl;
     system("pause");
     return 0;
 }

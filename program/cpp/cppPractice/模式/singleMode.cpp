@@ -1,0 +1,6 @@
+class singleMode
+{
+public:
+    singleMode(){}
+
+};
