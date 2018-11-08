@@ -6,22 +6,23 @@ class Solution:
         :type emails: List[str]
         :rtype: int
         """
-        for string in emails:
-            l =string.split("@")
-            l1 = l[0].split(".")
-            l2=""
-            for i in l1:
-                l2+=i
-            pos=-1
-            for i in range(len(l2)):
-                if l2[i]=="+":
-                    pos =i
-            if pos!=-1:
-                l2=l2[0:pos] 
-            l=l2+l
+        l=[]
+        for e in emails:
+            l1,l2 =e.split("@")
+            for i in range(len(l1)):
+                if(l1[i]=="+"):
+                    l1 =l1[0:i]
+                    break
+            e=l1.replace(".","")+"@"+l2
+            if e not in l:
+                l.append(e)
+        return len(l)
+
 
 def main():
-    pass
+    s = Solution()
+    re=s.numUniqueEmails(["test.email+alex@leetcode.com","test.e.mail+bob.cathy@leetcode.com","testemail+david@lee.tcode.com"])
+    print(re)
 
 if __name__ == '__main__':
     main()
