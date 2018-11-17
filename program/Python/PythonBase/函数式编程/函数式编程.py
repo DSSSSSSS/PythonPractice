@@ -15,7 +15,7 @@ def main():
     list(r)  # 结果r是一个Iterator，Iterator是惰性序列
 
     # reduce 减少list 和为一个元素
-    def add(x, y):
+    def add1(x, y):
         return x+y
     reduce(add, [1, 3, 5, 7, 9])
     
