@@ -1,15 +1,38 @@
+'''http://jzqt.github.io/2015/12/29/SQLAlchemy%E7%AC%94%E8%AE%B0/'''
 
-from sqlalchemy import Column, String, create_engine, text
+from sqlalchemy import Column, String, create_engine, text, Enum, INT
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.ext.declarative import declarative_base
 import sqlite3
+
 # 创建对象的基类:
 Base = declarative_base()
 
 maxid = -1
 
+
 class DBError(ValueError):
     pass
+
+
+class UserTpye(Enum):
+    ordinary = 1
+    Super = 2
+
+
+class User(Base):
+    # 表的名字:
+    __tablename__ = 'user'
+
+    # 表的结构:
+    id = Column(String(20), primary_key=True)
+    name = Column(String(20))
+    passwd = Column(String(20))
+    userTpye = Column(INT)
+
+    def __str__(self):
+        return (str(self.id)+" "+str(self.name)+" "+str(self.passwd))+" "+str(self.userTpye)
+
 
 class DBQuery():
     def __init__(self):
@@ -23,8 +46,12 @@ class DBQuery():
     def getMaxId(self):
         #id_ = session.query(User).all()
         #id_ = session.query(User).order_by(User.id).first()
-        id_ = self.session.query(User).from_statement(
-            text("select * From user where id=(select max(id) from user)")).one()
+        
+        try:
+            id_ = self.session.query(User).from_statement(
+                text("select * From user where id=(select max(id) from user)")).one()
+        except:
+            return 0
         return id_.id
 
     def query(self):
@@ -37,26 +64,32 @@ class DBQuery():
         self.session.close()
 
     # 把给定user date 插入数据库
-    def register(self, name_, passwd_):
+    def __register1(self, name_, passwd_):
         #global maxid
-        #if maxid == -1:
+        # if maxid == -1:
         maxid = self.getMaxId()
-        if (self.session.query(User).filter(User.name==name_).count())!=0:
-            raise DBError("name is invalid") #重名异常
+        if (self.session.query(User).filter(User.name == name_).count()) != 0:
+            raise DBError("name is invalid")  # 重名异常
         new_user = User(maxid, name=name_, passwd=passwd_)
 
         self.insert(new_user)
-        #maxid += 1
-    
-    def login(self,name,passwd):
+        maxid += 1
+
+    def register(self, user: User):
+        user.id = self.getMaxId()+1
+        if (self.session.query(User).filter(User.name == user.name).count()) != 0:
+            raise DBError("name is invalid")  # 重名异常
+        self.insert(user)
+
+    def login(self, user: User):
         #re =self.session.query(User).filter(User.name==name).filter(User.passwd==passwd).all()
-        #for i in re:
-            #print(i)
-        if self.session.query(User).filter(User.name==name).filter(User.passwd==passwd).count()!=0:
+        # for i in re:
+            # print(i)
+        if self.session.query(User).filter(User.name == user.name).filter(User.passwd == user.passwd).count() != 0:
             return True
-        else :
+        else:
             return False
-    
+
     def insert(self, new_user):
         # 创建session对象:
         #session = DBSession()
@@ -67,18 +100,6 @@ class DBQuery():
         # 提交即保存到数据库:
         self.session.commit()
 
-
-class User(Base):
-    # 表的名字:
-    __tablename__ = 'user'
-
-    # 表的结构:
-    id = Column(String(20), primary_key=True)
-    name = Column(String(20))
-    passwd = Column(String(20))
-
-    def __str__(self):
-        return (str(self.id)+" "+str(self.name)+" "+str(self.passwd))
 
 
 # 初始化数据库连接:
@@ -92,14 +113,15 @@ DBSession = sessionmaker(bind=engine)
 
 # https://blog.csdn.net/Lotfee/article/details/57406450
 def main():
-    new_user = User(id='4', name='Bob', passwd="123")
-    q=DBQuery()
+    new_user = User(id='1', name='Bob', passwd="123",
+                    userTpye=UserTpye.ordinary)
+    q = DBQuery()
     #q.register(name_="Bob", passwd_="123")
-    id_=q.getMaxId()
-    re =q.login(name ="Bob",passwd="123")
+    q.register(new_user)
+    id_ = q.getMaxId()
+    re = q.login(new_user)
     print(re)
-    #print(id_)
-
+    # print(id_)
 
 
 if __name__ == '__main__':
