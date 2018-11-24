@@ -4,6 +4,7 @@
         "ostream": "cpp"
     },
     "files.autoGuessEncoding": false,
+    "python.linting.pylintEnabled": false,
     
    
    
