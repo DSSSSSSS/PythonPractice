@@ -30,3 +30,6 @@
 3个。
 心理课程。NLP Neuro-Linguistic Programming 跟全职猎人的念很像。 书名《重塑心灵》
 
+## 任务
+
+1. 学习心理课程，并做笔记。做在IdeaAndQuestion的心理下。
