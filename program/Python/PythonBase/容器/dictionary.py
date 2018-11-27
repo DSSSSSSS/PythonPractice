@@ -1,3 +1,26 @@
+class Student(object):
+    def __init__(self, name):
+        self.name = name
+
+    def __getitem__(self, item):
+        return self.__dict__[item]
+
+    def __setitem__(self, key, value):
+        self.__dict__[key] = value
+
+    def __delitem__(self, key):
+        self.__dict__.pop(key)
+        print('invokeed')
+
+
+s = Student('hkey')
+s['age'] = 20
+s['hobby'] = 'coding'
+print(s['name'])
+print(s['age'])
+del s['age']
+
+
 def main():
     #在其他语言中也称为map，使用键-值（key-value）存储，具有极快的查找速度。
     #需要占用大量的内存
