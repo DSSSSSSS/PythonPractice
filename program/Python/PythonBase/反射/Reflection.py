@@ -21,7 +21,7 @@ def main():
     if not isExist:
         raise AssertionError
     func = getattr(this_module, "echo_test3")()
-
+    
 
 if __name__ == '__main__':
     main()
